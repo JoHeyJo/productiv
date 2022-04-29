@@ -4,7 +4,7 @@ import EditableTodo from "./EditableTodo";
 /** Show list of editable todos.
  *
  * Props:
- * - todos: array of [ todo, ... ]
+ * - todoList: array of [ todo, ... ]
  * - update(): fn to call to update a todo
  * - remove(): fn to call to remove a todo
  *
@@ -13,12 +13,11 @@ import EditableTodo from "./EditableTodo";
 
 function EditableTodoList({ todoList, update, remove }) {
   return (
-      <div>
-        { todoList.map(todo =>{
-          < EditableTodo todo={todo} update={update} remove={remove}/>
-        })
-        }
-      </div>
+    <div>
+      {todoList.map((todo) => {
+        return <EditableTodo todo={todo} update={update} remove={remove} />;
+      })}
+    </div>
   );
 }
 

@@ -16,68 +16,60 @@ import EditableTodoList from "./EditableTodoList";
  */
 
 function TodoApp({ initialTodos }) {
-  // const initialFormData = { title:"", description: "", priority: "" };
-  const [todoList, setTodoList] = useState(initialTodos)
-  // const [formData, setFormData] = setState(initialFormData)
+  const [todoList, setTodoList] = useState(initialTodos);
 
   /** add a new todo to list */
   function create(newTodo) {
-    setTodoList(list => [...list, newTodo]);
+    const todoWithId = { ...newTodo, id: uuid() };
+    setTodoList((list) => [...list, todoWithId]);
   }
-
-  // function updateForm(todo){
-  //   setFormData({ 
-  //     title: todo.title, 
-  //     description: todo.description, 
-  //     priority: todo.priority
-  //   })
-  // }
 
   /** update a todo with updatedTodo */
   function update(updatedTodo) {
     const id = updatedTodo.id;
-    setTodoList(list => 
-      list.map(todo =>
-        todo.id === id ? todo = updatedTodo : todo = todo
+    setTodoList((list) =>
+      list.map((todo) =>
+        todo.id === id ? (todo = updatedTodo) : (todo = todo)
       )
     );
   }
 
   /** delete a todo by id */
   function remove(id) {
-    let newTodoList = todoList.filter(todo => todo.id !== id);
+    let newTodoList = todoList.filter((todo) => todo.id !== id);
     setTodoList(newTodoList);
-  
   }
 
   return (
-      <main className="TodoApp">
-        <div className="row">
-
-          <div className="col-md-6">
-            <EditableTodoList /> OR
+    <main className="TodoApp">
+      <div className="row">
+        <div className="col-md-6">
+          {todoList.length > 0 ? (
+            <EditableTodoList
+              todoList={todoList}
+              update={update}
+              remove={remove}
+            />
+          ) : (
             <span className="text-muted">You have no todos.</span>
-          </div>
+          )}
+        </div>
 
-          <div className="col-md-6">
-            {todoList.length > 0 && 
+        <div className="col-md-6">
+          {todoList.length > 0 && (
             <section className="mb-4">
               <h3>Top Todo</h3>
-              <TopTodo />
+              <TopTodo todoList={todoList} />
             </section>
-            }
+          )}
 
-            <section>
-              <h3 className="mb-3">Add Nü</h3>
-            <TodoForm 
-              create={create} 
-              update={update} 
-              />
-            </section>
-          </div>
-
+          <section>
+            <h3 className="mb-3">Add Nü</h3>
+            <TodoForm update={create} />
+          </section>
         </div>
-      </main>
+      </div>
+    </main>
   );
 }
 
